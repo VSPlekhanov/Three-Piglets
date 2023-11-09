@@ -3,14 +3,15 @@ package org.piglets.static_data;
 import org.piglets.entity.Piglet;
 import org.piglets.entity.User;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.Locale;
+import java.time.temporal.TemporalAccessor;
 
 public class Messages {
 
     private static final DateTimeFormatter formatter =
-            DateTimeFormatter.ofPattern("dd.MM.yyyy at HH:mm", Locale.ENGLISH);
+            DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 
     public static final String FATAL_ERROR = """ 
             Что-то все совсем сломалось :(
@@ -148,7 +149,7 @@ public class Messages {
             """;
 
     private static final String MESSAGE_TEMPLATE = """
-            %s
+            %s UTC
             
             %s
             """;
@@ -294,14 +295,15 @@ public class Messages {
     }
 
     public static String decorateMessage(User.Message message) {
-        return MESSAGE_TEMPLATE.formatted(formatter.format(message.createdAt()), message.text());
+        var time = message.createdAt().atZone(ZoneId.of("UTC")).toLocalDateTime();
+        return MESSAGE_TEMPLATE.formatted(formatter.format(time), message.text());
     }
     
     private static String pigletToMessage(Piglet piglet) {
         return switch (piglet) {
-            case BLACK -> "серого";
-            case WHITE -> "белого";
-            case PINK -> "розового";
+            case BLACK -> "серую";
+            case WHITE -> "белую";
+            case PINK -> "розовую";
         };
     }
 }

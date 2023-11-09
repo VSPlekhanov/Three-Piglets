@@ -5,9 +5,10 @@ import org.piglets.entity.Piglet;
 import org.piglets.entity.User;
 import org.piglets.service.UserService;
 import org.piglets.static_data.Buttons;
+import org.piglets.static_data.Photos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -27,16 +28,25 @@ import static org.piglets.utils.CommonMessageUtils.callBackAnswer;
 public class MainMenuHandler implements InputMessageHandler {
 
     @Override
-    public List<BotApiMethod<?>> handle(Update update, User user) {
+    public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         String text = messageText(update);
         if (BLACK_PIGLET.equals(text)) {
-            return List.of(callBackAnswer(user.getChatId(), blackPigletChosen(), pigletKeyboard(BLACK)));
+            return List.of(
+                    callBackAnswer(user.getChatId(), Photos.BLACK_PIG),
+                    callBackAnswer(user.getChatId(), blackPigletChosen(), pigletKeyboard(BLACK))
+            );
         }
         if (WHITE_PIGLET.equals(text)) {
-            return List.of(callBackAnswer(user.getChatId(), whitePigletChosen(), pigletKeyboard(WHITE)));
+            return List.of(
+                    callBackAnswer(user.getChatId(), Photos.WHITE_PIG),
+                    callBackAnswer(user.getChatId(), whitePigletChosen(), pigletKeyboard(WHITE))
+            );
         }
         if (PINK_PIGLET.equals(text)) {
-            return List.of(callBackAnswer(user.getChatId(), pinkPigletChosen(), pigletKeyboard(PINK)));
+            return List.of(
+                    callBackAnswer(user.getChatId(), Photos.PINK_PIG),
+                    callBackAnswer(user.getChatId(), pinkPigletChosen(), pigletKeyboard(PINK))
+            );
         }
         if (SETTINGS.equals(text)) {
             return List.of(callBackAnswer(user.getChatId(), "", settingsMenuKeyboard()));

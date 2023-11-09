@@ -6,7 +6,7 @@ import org.piglets.entity.User;
 import org.piglets.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -29,7 +29,7 @@ public class BreakApprovingCallbackHandler implements InputCallbackHandler {
     private UserService userService;
 
     @Override
-    public List<BotApiMethod<?>> handle(Update update, User user) {
+    public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         var piglet = Piglet.valueOf(callbackValue(update));
         var partner = userService.getUser(user.getPartnerId());
         user.setBotState(MAIN_MENU);
@@ -47,7 +47,7 @@ public class BreakApprovingCallbackHandler implements InputCallbackHandler {
         userService.save(user);
         userService.save(partner);
 
-        var response = new ArrayList<BotApiMethod<?>>();
+        var response = new ArrayList<PartialBotApiMethod<?>>();
         response.add(callBackAnswer(user.getChatId(), yourMessages(), mainMenuKeyboard()));
         response.add(callBackAnswer(partner.getChatId(), yourMessages(), mainMenuKeyboard()));
         response.addAll(userForUser);

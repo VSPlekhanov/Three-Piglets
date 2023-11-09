@@ -5,7 +5,7 @@ import org.piglets.entity.User;
 import org.piglets.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public class PartnershipRejectingCallbackHandler implements InputCallbackHandler
     private UserService userService;
 
     @Override
-    public List<BotApiMethod<?>> handle(Update update, User user) {
+    public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         String rejectedUserId = callbackValue(update);
         User rejectedUser = userService.getUser(Long.valueOf(rejectedUserId));
         Long rejectedUserPartner = rejectedUser.getPartnerId();
@@ -33,11 +33,11 @@ public class PartnershipRejectingCallbackHandler implements InputCallbackHandler
         rejectedUser.setBotState(CHOOSE_PARTNER);
         userService.save(rejectedUser);
 
-        BotApiMethod<?> rejectSuccessful = callBackAnswer(user.getChatId(), rejectedSuccess());
-        BotApiMethod<?> youAreRejected = callBackAnswer(Long.valueOf(callbackValue(update)),
+        PartialBotApiMethod<?> rejectSuccessful = callBackAnswer(user.getChatId(), rejectedSuccess());
+        PartialBotApiMethod<?> youAreRejected = callBackAnswer(Long.valueOf(callbackValue(update)),
                 partnershipRequestRejected(String.valueOf(user.getId())));
-        BotApiMethod<?> toBegin = callBackAnswer(user.getChatId(), toBegin());
-        BotApiMethod<?> userIdMessage = callBackAnswer(user.getChatId(), String.valueOf(user.getId()));
+        PartialBotApiMethod<?> toBegin = callBackAnswer(user.getChatId(), toBegin());
+        PartialBotApiMethod<?> userIdMessage = callBackAnswer(user.getChatId(), String.valueOf(user.getId()));
 
         return Streams.concat(
                         Optional.of(rejectSuccessful).stream(),

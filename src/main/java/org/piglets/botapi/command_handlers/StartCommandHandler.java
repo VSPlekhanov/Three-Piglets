@@ -4,7 +4,7 @@ import org.piglets.entity.User;
 import org.piglets.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
@@ -25,7 +25,7 @@ public class StartCommandHandler implements InputCommandHandler {
     private UserService userService;
 
     @Override
-    public List<BotApiMethod<?>> handle(Update update, User user) {
+    public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         Message message = update.getMessage();
         Long userId = message.getFrom().getId();
         if (userService.findUser(userId).isEmpty()) {

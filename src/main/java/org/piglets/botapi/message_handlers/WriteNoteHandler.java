@@ -7,7 +7,7 @@ import org.piglets.service.UserService;
 import org.piglets.static_data.Messages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.Clock;
@@ -30,7 +30,7 @@ public class WriteNoteHandler implements InputMessageHandler {
 
 
     @Override
-    public List<BotApiMethod<?>> handle(Update update, User user) {
+    public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         Piglet currentPiglet = user.getCurrentPiglet();
         userService.saveBotState(user.getId(), MAIN_MENU);
         if (currentPiglet == null) {

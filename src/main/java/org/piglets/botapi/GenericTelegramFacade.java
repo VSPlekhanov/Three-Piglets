@@ -6,17 +6,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.piglets.botapi.callback_handlers.InputCallbackHandler;
 import org.piglets.botapi.command_handlers.InputCommandHandler;
 import org.piglets.botapi.message_handlers.InputMessageHandler;
-import org.piglets.static_data.Messages;
 import org.piglets.utils.CommonMessageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.*;
 import org.piglets.service.UserService;
 
 import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Stream;
 
 import static org.piglets.static_data.Messages.FATAL_ERROR;
 
@@ -43,7 +40,7 @@ public class GenericTelegramFacade {
         this.userService = userService;
     }
 
-    public List<BotApiMethod<?>> handleUpdate(Update update) {
+    public List<PartialBotApiMethod<?>> handleUpdate(Update update) {
         if ((!update.hasCallbackQuery() && !update.hasMessage()) || (update.hasMessage() && !update.getMessage().hasText())) {
             log.error("Invalid update: {}", update);
             return List.of();

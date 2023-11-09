@@ -4,7 +4,7 @@ import org.piglets.entity.User;
 import org.piglets.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class PartnershipRequestCancellingCallbackHandler implements InputCallbac
     private UserService userService;
 
     @Override
-    public List<BotApiMethod<?>> handle(Update update, User user) {
+    public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         Long partnerId = userService.getUser(user.getId()).getPartnerId();;
         if (user.getBotState() != AWAITING_PARTNERSHIP_CONFIRMATION || partnerId == null) {
             return List.of(callBackAnswer(user.getChatId(), stateChangedError()));

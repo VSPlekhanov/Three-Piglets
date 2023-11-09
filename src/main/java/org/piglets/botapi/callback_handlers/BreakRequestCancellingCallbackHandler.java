@@ -5,7 +5,7 @@ import org.piglets.service.UserService;
 import org.piglets.static_data.Keyboards;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class BreakRequestCancellingCallbackHandler implements InputCallbackHandl
     private UserService userService;
 
     @Override
-    public List<BotApiMethod<?>> handle(Update update, User user) {
+    public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         if (user.getBotState() != AWAITING_BREAK_CONFIRMATION) {
             return List.of(callBackAnswer(user.getChatId(), stateChangedError()));
         }

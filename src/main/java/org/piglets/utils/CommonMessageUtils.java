@@ -2,9 +2,11 @@ package org.piglets.utils;
 
 import org.telegram.telegrambots.meta.api.methods.ParseMode;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Chat;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -73,6 +75,14 @@ public class CommonMessageUtils {
                 .parseMode(ParseMode.HTML)
                 .disableWebPagePreview(true)
                 .text(message)
+                .build();
+    }
+
+    public static SendPhoto callBackAnswer(long chatId, InputFile photo) {
+        return SendPhoto.builder()
+                .chatId(chatId)
+                .parseMode(ParseMode.HTML)
+                .photo(photo)
                 .build();
     }
 

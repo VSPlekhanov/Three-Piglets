@@ -7,7 +7,7 @@ import org.piglets.service.UserService;
 import org.piglets.static_data.Keyboards;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class BreakRejectingCallbackHandler implements InputCallbackHandler {
     private UserService userService;
 
     @Override
-    public List<BotApiMethod<?>> handle(Update update, User user) {
+    public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         User partner = userService.getUser(user.getPartnerId());
         if (partner.getBotState() != AWAITING_BREAK_CONFIRMATION) {
             return List.of(callBackAnswer(user.getChatId(), rejectedSuccess(), mainMenuKeyboard()));

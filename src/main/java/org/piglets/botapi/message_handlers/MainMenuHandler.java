@@ -1,10 +1,7 @@
 package org.piglets.botapi.message_handlers;
 
 import org.piglets.botapi.BotState;
-import org.piglets.entity.Piglet;
 import org.piglets.entity.User;
-import org.piglets.service.UserService;
-import org.piglets.static_data.Buttons;
 import org.piglets.static_data.Photos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,24 +24,27 @@ import static org.piglets.utils.CommonMessageUtils.callBackAnswer;
 @Component
 public class MainMenuHandler implements InputMessageHandler {
 
+    @Autowired
+    private Photos photos;
+
     @Override
     public List<PartialBotApiMethod<?>> handle(Update update, User user) {
         String text = messageText(update);
         if (BLACK_PIGLET.equals(text)) {
             return List.of(
-                    callBackAnswer(user.getChatId(), Photos.BLACK_PIG),
+                    callBackAnswer(user.getChatId(), photos.getBlackPig()),
                     callBackAnswer(user.getChatId(), blackPigletChosen(), pigletKeyboard(BLACK))
             );
         }
         if (WHITE_PIGLET.equals(text)) {
             return List.of(
-                    callBackAnswer(user.getChatId(), Photos.WHITE_PIG),
+                    callBackAnswer(user.getChatId(), photos.getWhitePig()),
                     callBackAnswer(user.getChatId(), whitePigletChosen(), pigletKeyboard(WHITE))
             );
         }
         if (PINK_PIGLET.equals(text)) {
             return List.of(
-                    callBackAnswer(user.getChatId(), Photos.PINK_PIG),
+                    callBackAnswer(user.getChatId(), photos.getPinkPig()),
                     callBackAnswer(user.getChatId(), pinkPigletChosen(), pigletKeyboard(PINK))
             );
         }

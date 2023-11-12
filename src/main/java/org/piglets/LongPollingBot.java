@@ -4,6 +4,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -12,20 +13,19 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.piglets.botapi.GenericTelegramFacade;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Service
 @Slf4j
-public class Bot extends TelegramLongPollingBot {
+@ConditionalOnExpression("'${telegrambot.webHookPath}' == null")
+public class LongPollingBot extends TelegramLongPollingBot {
     private final String botUserName;
     private final String botToken;
     private final GenericTelegramFacade telegramFacade;
 
     @Autowired
-    public Bot(GenericTelegramFacade telegramFacade,
-               @Value("${telegrambot.botToken}") String botToken,
-               @Value("${telegrambot.botUserName}") String botUserName) {
+    public LongPollingBot(GenericTelegramFacade telegramFacade,
+                          @Value("${telegrambot.botToken}") String botToken,
+                          @Value("${telegrambot.botUserName}") String botUserName) {
         this.telegramFacade = telegramFacade;
         this.botToken = botToken;
         this.botUserName = botUserName;

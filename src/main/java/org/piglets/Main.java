@@ -7,13 +7,14 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+import org.telegram.telegrambots.meta.generics.TelegramBot;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 @SpringBootApplication
 @EnableMongoRepositories
 public class Main {
     @Autowired
-    private Bot bot;
+    private TelegramBot bot;
     public static void main(String[] args) {
         SpringApplication.run(Main.class, args);
     }
@@ -21,8 +22,10 @@ public class Main {
     @PostConstruct
     public void registerBot() {
         try {
-            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
-            botsApi.registerBot(bot);
+            if (bot instanceof LongPollingBot) {
+                TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+                botsApi.registerBot((org.telegram.telegrambots.meta.generics.LongPollingBot) bot);
+            }
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
